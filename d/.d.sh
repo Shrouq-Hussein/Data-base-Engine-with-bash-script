@@ -28,7 +28,7 @@ do
                 if [ -z "$field" ]
                 then 
                     echo "This field is required!" 
-                    break
+                    #------------------
                 elif [[ $field =~ ^[a-zA-Z]*$ ]]
                 then
                     flag2=true
@@ -40,11 +40,8 @@ do
                     numFields=$numFields+1
                     fieldsarray[$num]=$field
                     read -p "Enter the fields of the table : " field  
-                    if [ -z "$field" ]
-                    then 
-                        echo "This field is required!" 
-                        break
-                    elif [[ $field =~ ^[a-zA-Z]*$ ]]
+                
+                    if [[ $field =~ ^[a-zA-Z]*$ ]]
                     then
                      flag2=true
                         while [[ "$field" ]]
@@ -57,10 +54,18 @@ do
                         done
                     else   echo "must containes characters only"
                     fi
+                
+                else
+                   echo "must contains characters only"
+               
+                
+                
                 fi
-                echo ''>> $tNameMeta
-                echo -n 'serial:' >> $tNameMeta
-                for((i=2 ;i<=$numFields ;i++))
+                if [ "$flag2" = true ]
+                 then
+                 echo ''>> $tNameMeta
+                 echo -n 'serial:' >> $tNameMeta
+                 for((i=2 ;i<=$numFields ;i++))
                     do
                     echo "Select the datatype of field ${fieldsarray[$i-1]} : "
                     select opt3 in 'Integer' 'Varchar' 'Password' 'Date' 'Email' 
@@ -119,7 +124,8 @@ do
                        
                         esac
                     done
-                done  
+                    done 
+               fi
             if [ "$flag2" = true ]
             then             
             echo "TABLE $tName is successfully created."
@@ -350,7 +356,10 @@ do
                     if [ -z "$data" ]
                     then 
                     echo "This field is required!"
+                    if [ "$flag" = true ]
+                    then
                     i=$i-1
+                    fi
                     else
                         if [ "$flag" = false ]
                         then
